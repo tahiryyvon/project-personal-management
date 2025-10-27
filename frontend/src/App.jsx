@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import EmployeeList from './components/EmployeeList';
-import TaskList from './components/TaskList';
-import EmployeeForm from './components/EmployeeForm';
-import TaskForm from './components/TaskForm';
-import Dashboard from './components/Dashboard';
-import './index.css';
+
+// URLs pour Vercel API Routes
+const API_BASE_URL = '/api';
 
 function App() {
   const [employees, setEmployees] = useState([]);
   const [tasks, setTasks] = useState([]);
-  const [activeView, setActiveView] = useState('dashboard');
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeView, setActiveView] = useState('employees');
 
   useEffect(() => {
     fetchEmployees();
@@ -19,135 +15,131 @@ function App() {
 
   const fetchEmployees = async () => {
     try {
-      const response = await fetch('http://localhost:3000/employees');
+      const response = await fetch(`${API_BASE_URL}/employees`);
       const data = await response.json();
       setEmployees(data);
     } catch (error) {
-      console.error('Erreur chargement employés:', error);
+      console.error('Erreur employés:', error);
     }
   };
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch('http://localhost:3000/tasks');
+      const response = await fetch(`${API_BASE_URL}/tasks`);
       const data = await response.json();
       setTasks(data);
     } catch (error) {
-      console.error('Erreur chargement tâches:', error);
+      console.error('Erreur tâches:', error);
     }
   };
 
-  const navigation = [
-    { id: 'dashboard', name: 'Dashboard', icon: '📊', current: activeView === 'dashboard' },
-    { id: 'employees', name: 'Employés', icon: '👥', current: activeView === 'employees' },
-    { id: 'tasks', name: 'Tâches', icon: '✅', current: activeView === 'tasks' },
-  ];
+  const addEmployee = async (employeeData) => {
+    try {
+      await fetch(`${API_BASE_URL}/employees`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(employeeData),
+      });
+      fetchEmployees();
+    } catch (error) {
+      console.error('Erreur ajout employé:', error);
+    }
+  };
+
+  const addTask = async (taskData) => {
+    try {
+      await fetch(`${API_BASE_URL}/tasks`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(taskData),
+      });
+      fetchTasks();
+    } catch (error) {
+      console.error('Erreur ajout tâche:', error);
+    }
+  };
 
   return (
-    <div className="min-h-screen gradient-bg">
-      {/* Sidebar Mobile */}
-      {sidebarOpen && (
-        <div className="fixed inset-0 z-40 lg:hidden">
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
-          <div className="relative flex flex-col w-64 h-full bg-white shadow-xl">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h1 className="text-2xl font-bold text-gray-900">🏢 TeamFlow</h1>
+    <div style={{ padding: '20px', fontFamily: 'Arial' }}>
+      <h1>🏢 Gestion Personnel</h1>
+      
+      <nav style={{ marginBottom: '20px' }}>
+        <button onClick={() => setActiveView('employees')}>Employés</button>
+        <button onClick={() => setActiveView('tasks')}>Tâches</button>
+      </nav>
+
+      {activeView === 'employees' && (
+        <div>
+          <h2>Ajouter Employé</h2>
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            addEmployee({
+              name: formData.get('name'),
+              email: formData.get('email'),
+              position: formData.get('position')
+            });
+            e.target.reset();
+          }}>
+            <input name="name" placeholder="Nom" required />
+            <input name="email" placeholder="Email" type="email" required />
+            <input name="position" placeholder="Poste" required />
+            <button type="submit">Ajouter</button>
+          </form>
+
+          <h2>Employés</h2>
+          {employees.map(emp => (
+            <div key={emp.id} style={{ border: '1px solid #ccc', margin: '10px', padding: '10px' }}>
+              <h3>{emp.name}</h3>
+              <p>Email: {emp.email}</p>
+              <p>Poste: {emp.position}</p>
             </div>
-            <nav className="flex-1 px-4 py-6 space-y-2">
-              {navigation.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => {
-                    setActiveView(item.id);
-                    setSidebarOpen(false);
-                  }}
-                  className={`w-full flex items-center px-4 py-3 text-lg font-medium rounded-xl transition-all ${
-                    item.current
-                      ? 'bg-primary-500 text-white shadow-lg'
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
-                >
-                  <span className="mr-3 text-xl">{item.icon}</span>
-                  {item.name}
-                </button>
-              ))}
-            </nav>
-          </div>
+          ))}
         </div>
       )}
 
-      <div className="flex">
-        {/* Sidebar Desktop */}
-        <div className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0">
-          <div className="flex flex-col flex-1 min-h-0 bg-white/80 backdrop-blur-lg border-r border-gray-200/50">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h1 className="text-2xl font-bold text-gray-900">🏢 TeamFlow</h1>
-              <p className="text-sm text-gray-500">Gestion d'équipe</p>
-            </div>
-            <nav className="flex-1 px-4 py-6 space-y-2">
-              {navigation.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveView(item.id)}
-                  className={`w-full flex items-center px-4 py-3 text-lg font-medium rounded-xl transition-all ${
-                    item.current
-                      ? 'bg-primary-500 text-white shadow-lg transform scale-105'
-                      : 'text-gray-700 hover:bg-gray-100 hover:scale-105'
-                  }`}
-                >
-                  <span className="mr-3 text-xl">{item.icon}</span>
-                  {item.name}
-                </button>
+      {activeView === 'tasks' && (
+        <div>
+          <h2>Ajouter Tâche</h2>
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            addTask({
+              title: formData.get('title'),
+              description: formData.get('description'),
+              dueDate: formData.get('dueDate'),
+              employeeId: parseInt(formData.get('employeeId'))
+            });
+            e.target.reset();
+          }}>
+            <input name="title" placeholder="Titre" required />
+            <textarea name="description" placeholder="Description" required />
+            <input name="dueDate" type="date" required />
+            <select name="employeeId" required>
+              <option value="">Sélectionner un employé</option>
+              {employees.map(emp => (
+                <option key={emp.id} value={emp.id}>{emp.name}</option>
               ))}
-            </nav>
-          </div>
-        </div>
+            </select>
+            <button type="submit">Ajouter</button>
+          </form>
 
-        {/* Main content */}
-        <div className="lg:pl-64 flex flex-col flex-1">
-          {/* Header */}
-          <header className="bg-white/80 backdrop-blur-lg border-b border-gray-200/50">
-            <div className="flex items-center justify-between px-6 py-4">
-              <div className="flex items-center">
-                <button
-                  type="button"
-                  className="lg:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100"
-                  onClick={() => setSidebarOpen(true)}
-                >
-                  <span className="text-2xl">☰</span>
-                </button>
-                <h2 className="ml-4 text-2xl font-semibold text-gray-900 capitalize">
-                  {navigation.find(item => item.id === activeView)?.name}
-                </h2>
-              </div>
-              <div className="flex items-center space-x-4">
-                <div className="w-10 h-10 bg-gradient-to-r from-primary-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-                  AD
-                </div>
-              </div>
+          <h2>Tâches</h2>
+          {tasks.map(task => (
+            <div key={task.id} style={{ border: '1px solid #ccc', margin: '10px', padding: '10px' }}>
+              <h3>{task.title}</h3>
+              <p>Description: {task.description}</p>
+              <p>Assigné à: {task.employee_name || 'Non assigné'}</p>
+              <p>Échéance: {new Date(task.dueDate).toLocaleDateString()}</p>
+              <p>Statut: {task.status}</p>
             </div>
-          </header>
-
-          {/* Page content */}
-          <main className="flex-1 p-6">
-            {activeView === 'dashboard' && (
-              <Dashboard employees={employees} tasks={tasks} />
-            )}
-            {activeView === 'employees' && (
-              <div className="space-y-6">
-                <EmployeeForm onEmployeeAdded={fetchEmployees} />
-                <EmployeeList employees={employees} />
-              </div>
-            )}
-            {activeView === 'tasks' && (
-              <div className="space-y-6">
-                <TaskForm employees={employees} onTaskAdded={fetchTasks} />
-                <TaskList tasks={tasks} onStatusChange={fetchTasks} />
-              </div>
-            )}
-          </main>
+          ))}
         </div>
-      </div>
+      )}
     </div>
   );
 }
