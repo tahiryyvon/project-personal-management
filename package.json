@@ -1,14 +1,8 @@
 {
-  "name": "gestion-personnel-fullstack",
+  "name": "personal-management-app",
   "version": "1.0.0",
   "scripts": {
-    "dev:backend": "cd backend && npm run dev",
-    "dev:frontend": "cd frontend && npm start",
-    "build:backend": "cd backend && npm run build",
-    "build:frontend": "cd frontend && npm run build",
-    "vercel-build": "npm run build:backend && npm run build:frontend"
-  },
-  "devDependencies": {
-    "@vercel/node": "^2.0.0"
+    "install-all": "npm install && npm install --prefix frontend && npm install --prefix backend",
+    "build": "npm run build --prefix frontend && npm run build --prefix backend"
   }
 }

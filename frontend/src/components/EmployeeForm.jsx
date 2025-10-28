@@ -85,7 +85,7 @@ const EmployeeForm = ({ onEmployeeAdded }) => {
         
         <button
           type="submit"
-          className="w-full md:w-auto px-8 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+          className="btn-primary"
         >
           <span className="flex items-center justify-center">
             <span className="mr-2">➕</span>

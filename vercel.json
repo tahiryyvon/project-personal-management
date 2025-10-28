@@ -2,24 +2,22 @@
   "version": 2,
   "builds": [
     {
-      "src": "frontend/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build"
-      }
+      "src": "backend/dist/main.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "frontend/build",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/frontend/api/$1.js"
+      "dest": "/backend/dist/main.js"
     },
     {
       "src": "/(.*)",
       "dest": "/frontend/build/$1"
     }
-  ],
-  "env": {
-    "DATABASE_URL": "postgresql://neondb_owner:npg_Cx0IQWNki4wM@ep-dawn-tree-ah0qhs7p-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require"
-  }
+  ]
 }

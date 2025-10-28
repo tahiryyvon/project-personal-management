@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
-import { EmployeeService } from '../services/employee.service'; // ← Chemin corrigé
-import { Employee } from '../entities/employee.entity'; // ← Chemin corrigé
+import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import { EmployeeService } from '../services/employee.service';
+import { Employee } from '../entities/employee.entity';
 
 @Controller('employees')
 export class EmployeeController {
@@ -14,5 +14,15 @@ export class EmployeeController {
   @Post()
   create(@Body() employee: Employee): Promise<Employee> {
     return this.employeeService.create(employee);
+  }
+
+  @Put(':id')
+  update(@Param('id') id: number, @Body() employee: Employee): Promise<Employee> {
+    return this.employeeService.update(id, employee);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: number): Promise<void> {
+    return this.employeeService.remove(id);
   }
 }

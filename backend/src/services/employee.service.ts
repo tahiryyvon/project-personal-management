@@ -14,13 +14,6 @@ export class EmployeeService {
     return this.employeeRepository.find({ relations: ['tasks'] });
   }
 
-  findOne(id: number): Promise<Employee> {
-    return this.employeeRepository.findOne({ 
-      where: { id }, 
-      relations: ['tasks'] 
-    });
-  }
-
   create(employee: Partial<Employee>): Promise<Employee> {
     return this.employeeRepository.save(employee);
   }

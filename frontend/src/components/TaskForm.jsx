@@ -45,69 +45,86 @@ const TaskForm = ({ employees, onTaskAdded }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
-      <h3>Créer une Tâche</h3>
-      <div>
-        <input
-          type="text"
-          name="title"
-          placeholder="Titre de la tâche"
-          value={formData.title}
-          onChange={handleChange}
-          required
-          style={{ margin: '5px', padding: '8px', width: '200px' }}
-        />
-      </div>
-      <div>
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={formData.description}
-          onChange={handleChange}
-          required
-          style={{ margin: '5px', padding: '8px', width: '200px', height: '60px' }}
-        />
-      </div>
-      <div>
-        <input
-          type="date"
-          name="dueDate"
-          value={formData.dueDate}
-          onChange={handleChange}
-          required
-          style={{ margin: '5px', padding: '8px', width: '200px' }}
-        />
-      </div>
-      <div>
-        <select
-          name="employeeId"
-          value={formData.employeeId}
-          onChange={handleChange}
-          required
-          style={{ margin: '5px', padding: '8px', width: '200px' }}
+    <div className="glass-card rounded-2xl p-6">
+      <h3 className="text-xl font-semibold text-gray-900 mb-6">Créer une Tâche</h3>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Titre de la tâche
+            </label>
+            <input
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+              placeholder="Titre de la tâche"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Date d'échéance
+            </label>
+            <input
+              type="date"
+              name="dueDate"
+              value={formData.dueDate}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Description
+          </label>
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            required
+            rows="3"
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+            placeholder="Description de la tâche..."
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Assigner à
+          </label>
+          <select
+            name="employeeId"
+            value={formData.employeeId}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+          >
+            <option value="">Sélectionner un employé</option>
+            {employees.map(employee => (
+              <option key={employee.id} value={employee.id}>
+                {employee.name} - {employee.position}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <button
+          type="submit"
+          className="btn-primary"
         >
-          <option value="">Sélectionner un employé</option>
-          {employees.map(employee => (
-            <option key={employee.id} value={employee.id}>
-              {employee.name} - {employee.position}
-            </option>
-          ))}
-        </select>
-      </div>
-      <button 
-        type="submit"
-        style={{ 
-          margin: '5px', 
-          padding: '8px 15px',
-          backgroundColor: '#28a745',
-          color: 'white',
-          border: 'none',
-          borderRadius: '4px'
-        }}
-      >
-        Créer Tâche
-      </button>
-    </form>
+          <span className="flex items-center justify-center">
+            <span className="mr-2">✅</span>
+            Créer Tâche
+          </span>
+        </button>
+      </form>
+    </div>
   );
 };
 

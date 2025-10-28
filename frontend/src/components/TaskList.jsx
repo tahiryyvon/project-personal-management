@@ -18,53 +18,66 @@ const TaskList = ({ tasks, onStatusChange }) => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'TODO': return '#ffc107';
-      case 'IN_PROGRESS': return '#17a2b8';
-      case 'DONE': return '#28a745';
-      default: return '#6c757d';
+      case 'TODO': return 'bg-yellow-100 text-yellow-800';
+      case 'IN_PROGRESS': return 'bg-blue-100 text-blue-800';
+      case 'DONE': return 'bg-green-100 text-green-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   return (
-    <div>
-      <h2>Liste des Tâches</h2>
-      {tasks.map(task => (
-        <div 
-          key={task.id} 
-          className="task-card"
-          style={{
-            border: '1px solid #ddd',
-            margin: '10px',
-            padding: '15px',
-            borderRadius: '5px'
-          }}
-        >
-          <h3>{task.title}</h3>
-          <p><strong>Description:</strong> {task.description}</p>
-          <p><strong>Échéance:</strong> {new Date(task.dueDate).toLocaleDateString()}</p>
-          <p><strong>Assigné à:</strong> {task.employee ? task.employee.name : 'Non assigné'}</p>
-          
-          <div>
-            <strong>Statut: </strong>
-            <select 
-              value={task.status} 
-              onChange={(e) => handleStatusChange(task.id, e.target.value)}
-              style={{ 
-                marginLeft: '10px',
-                padding: '5px',
-                backgroundColor: getStatusColor(task.status),
-                color: 'white',
-                border: 'none',
-                borderRadius: '3px'
-              }}
-            >
-              <option value="TODO">À faire</option>
-              <option value="IN_PROGRESS">En cours</option>
-              <option value="DONE">Terminé</option>
-            </select>
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-gray-900">Liste des Tâches</h2>
+        <span className="px-3 py-1 bg-primary-500 text-white text-sm font-medium rounded-full">
+          {tasks.length} tâches
+        </span>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4">
+        {tasks.map((task) => (
+          <div
+            key={task.id}
+            className="glass-card rounded-2xl p-6 transform hover:scale-105 transition-all duration-200"
+          >
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{task.title}</h3>
+                <p className="text-gray-600 mb-3">{task.description}</p>
+                
+                <div className="flex items-center space-x-4 text-sm text-gray-500">
+                  <span className="flex items-center">
+                    <span className="mr-1">👤</span>
+                    {task.employee ? task.employee.name : 'Non assigné'}
+                  </span>
+                  <span className="flex items-center">
+                    <span className="mr-1">📅</span>
+                    {new Date(task.dueDate).toLocaleDateString()}
+                  </span>
+                </div>
+              </div>
+              
+              <div className="flex flex-col items-end space-y-2">
+                <span className={`px-3 py-1 text-sm font-medium rounded-full ${getStatusColor(task.status)}`}>
+                  {task.status === 'TODO' && 'À faire'}
+                  {task.status === 'IN_PROGRESS' && 'En cours'}
+                  {task.status === 'DONE' && 'Terminé'}
+                </span>
+                
+                <select 
+                  value={task.status} 
+                  onChange={(e) => handleStatusChange(task.id, e.target.value)}
+                  className="px-3 py-1 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                >
+                  <option value="TODO">À faire</option>
+                  <option value="IN_PROGRESS">En cours</option>
+                  <option value="DONE">Terminé</option>
+                </select>
+              </div>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

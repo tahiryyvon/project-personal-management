@@ -54,7 +54,7 @@ const Dashboard = ({ employees, tasks }) => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Employés Récents */}
+        {/* Recent Employees */}
         <div className="glass-card rounded-2xl p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Employés Récents</h3>
           <div className="space-y-4">
@@ -75,7 +75,7 @@ const Dashboard = ({ employees, tasks }) => {
           </div>
         </div>
 
-        {/* Tâches Récentes */}
+        {/* Recent Tasks */}
         <div className="glass-card rounded-2xl p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Tâches Récentes</h3>
           <div className="space-y-4">

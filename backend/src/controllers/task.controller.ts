@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Put, Body, Param } from '@nestjs/common';
-import { TaskService } from '../services/task.service'; // ← Chemin corrigé
-import { Task } from '../entities/task.entity'; // ← Chemin corrigé
+import { Controller, Get, Post, Put, Body, Param, Delete } from '@nestjs/common';
+import { TaskService } from '../services/task.service';
+import { Task } from '../entities/task.entity';
 
 @Controller('tasks')
 export class TaskController {
@@ -19,5 +19,10 @@ export class TaskController {
   @Put(':id/status')
   updateStatus(@Param('id') id: number, @Body('status') status: string): Promise<Task> {
     return this.taskService.updateStatus(id, status);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: number): Promise<void> {
+    return this.taskService.remove(id);
   }
 }
