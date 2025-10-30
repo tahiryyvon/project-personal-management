@@ -11,6 +11,10 @@
   background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 50%, #faf5ff 100%);
 }
 
+.btn-primary {
+  @apply bg-primary-600 font-bold py-3 px-6 rounded-lg hover:bg-primary-700 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-1;
+}
+
 /* Pour le débogage - vérifier que Tailwind charge */
 .debug-tailwind {
   color: #3b82f6; /* primary-500 */

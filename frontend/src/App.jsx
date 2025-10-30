@@ -63,7 +63,7 @@ function App() {
                   }}
                   className={`w-full flex items-center px-4 py-3 text-lg font-medium rounded-xl transition-all ${
                     item.current
-                      ? 'bg-primary-500 text-white shadow-lg'
+                      ? 'bg-primary-100 text-primary-600 shadow-lg'
                       : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >
@@ -91,7 +91,7 @@ function App() {
                   onClick={() => setActiveView(item.id)}
                   className={`w-full flex items-center px-4 py-3 text-lg font-medium rounded-xl transition-all ${
                     item.current
-                      ? 'bg-primary-500 text-white shadow-lg transform scale-105'
+                      ? 'bg-primary-100 text-primary-600 shadow-lg transform scale-105'
                       : 'text-gray-700 hover:bg-gray-100 hover:scale-105'
                   }`}
                 >
