@@ -1,13 +1,11 @@
-// api/index.js
+// File: /api/index.js
 
-// This file needs to be JavaScript, not TypeScript.
 const express = require('express');
 const { NestFactory } = require('@nestjs/core');
-// IMPORTANT: Point this to your compiled AppModule. 
-// The path is relative from this file in the Vercel output, not from your source code.
+// This path points to the compiled AppModule from your NestJS build
 const { AppModule } = require('../backend/dist/app.module');
 
-// Cache the NestJS app instance for better performance
+// Cache the app instance for better performance in a serverless environment
 let app;
 
 async function bootstrap() {
@@ -15,9 +13,9 @@ async function bootstrap() {
     const expressApp = express();
     const nestApp = await NestFactory.create(AppModule, expressApp);
     
-    // Optional: Add global prefix to match your routes, e.g., /api/users
+    // Set a global prefix to match the Vercel route
     nestApp.setGlobalPrefix('api');
-    nestApp.enableCors(); // Enable CORS if your frontend needs it
+    nestApp.enableCors(); // Recommended for API routes
 
     await nestApp.init();
     app = expressApp;
@@ -25,7 +23,7 @@ async function bootstrap() {
   return app;
 }
 
-// Export the Vercel serverless function handler
+// Export the Vercel handler
 module.exports = async (req, res) => {
   const server = await bootstrap();
   server(req, res);
