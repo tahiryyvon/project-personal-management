@@ -1,8 +1,4 @@
 {
   "name": "personal-management-app",
-  "version": "1.0.0",
-  "scripts": {
-    "install-all": "npm install && npm install --prefix frontend && npm install --prefix backend",
-    "build": "npm run build --prefix frontend && npm run build --prefix backend"
-  }
+  "version": "1.0.0"
 }
