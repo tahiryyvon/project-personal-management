@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "dist/main.js",
+      "src": "backend/package.json",
       "use": "@vercel/node"
     },
     {
@@ -17,11 +17,6 @@
     {
       "src": "/api/(.*)",
       "dest": "backend/main.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "dist/main.js",
-      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"]
     },
     {
       "src": "/static/(.*)",
