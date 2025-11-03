@@ -1,12 +1,18 @@
-// File: backend/src/main.ts
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
-export default async function handler(req, res) {
+async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api');
-  await app.init();
   
-  const expressApp = app.getHttpAdapter().getInstance();
-  return expressApp(req, res);
+  // Essential pour Vercel
+  app.enableCors();
+  
+  // Set global prefix pour toutes les routes API
+  app.setGlobalPrefix('api');
+  
+  const port = process.env.PORT || 3001;
+  await app.listen(port);
+  console.log(`Backend running on port ${port}`);
 }
+
+bootstrap();
