@@ -1,9 +1,11 @@
 import React from 'react';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+
 const TaskList = ({ tasks, onStatusChange }) => {
   const handleStatusChange = async (taskId, newStatus) => {
     try {
-      await fetch(`http://localhost:3000/tasks/${taskId}/status`, {
+      await fetch(`${API_BASE_URL}/tasks/${taskId}/status`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json' 

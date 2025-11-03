@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+
 const TaskForm = ({ employees, onTaskAdded }) => {
   const [formData, setFormData] = useState({
     title: '',
@@ -17,7 +19,7 @@ const TaskForm = ({ employees, onTaskAdded }) => {
         employeeId: parseInt(formData.employeeId)
       };
 
-      await fetch('http://localhost:3000/tasks', {
+      await fetch('${API_BASE_URL}/tasks', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json' 

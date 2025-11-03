@@ -5,6 +5,9 @@ import EmployeeForm from './components/EmployeeForm';
 import TaskForm from './components/TaskForm';
 import Dashboard from './components/Dashboard';
 
+// URL de base de l'API - utilise l'environnement en production, localhost en développement
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+
 function App() {
   const [employees, setEmployees] = useState([]);
   const [tasks, setTasks] = useState([]);
@@ -18,7 +21,10 @@ function App() {
 
   const fetchEmployees = async () => {
     try {
-      const response = await fetch('http://localhost:3000/employees');
+      const response = await fetch(`${API_BASE_URL}/employees`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const data = await response.json();
       setEmployees(data);
     } catch (error) {
@@ -28,7 +34,10 @@ function App() {
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch('http://localhost:3000/tasks');
+      const response = await fetch(`${API_BASE_URL}/tasks`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const data = await response.json();
       setTasks(data);
     } catch (error) {
