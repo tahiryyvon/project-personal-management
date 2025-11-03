@@ -16,7 +16,7 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "backend/dist/main.js"  // ← CHANGEMENT ICI
+      "dest": "backend/dist/main.js"
     },
     {
       "src": "/static/(.*)",
